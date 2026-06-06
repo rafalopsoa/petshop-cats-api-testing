@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "dados": [
+    {
+      "id": "uuid-2",
+      "nome": "Ração Úmida Sachê Royal Canin Gatos Castrados",
+      "tipo": "racao_umida",
+      "marca": "royal_canin",
+      "preco": 5.20
+    }
+  ]
+}

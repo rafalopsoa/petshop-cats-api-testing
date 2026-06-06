@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "dados": [
+    {
+      "id": "uuid-1",
+      "nome": "Sachê Whiskas Gatos Castrados Carne",
+      "tipo": "racao_umida",
+      "marca": "whiskas",
+      "preco": 4.50
+    }
+  ]
+}

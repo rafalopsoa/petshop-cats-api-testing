@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "codigo": "PAGINATION_LIMIT_EXCEEDED",
+  "mensagem": "O limite de paginação não pode exceder 100 registros por requisição."
+}

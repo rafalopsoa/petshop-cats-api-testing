@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "dados": [
+    {
+      "id": "uuid-3",
+      "nome": "Ração Seca Golden Gatos Castrados Salmão",
+      "tipo": "racao_seca",
+      "marca": "golden",
+      "preco": 145.90
+    },
+    {
+      "id": "uuid-4",
+      "nome": "Ração Seca Golden Gatos Castrados Frango",
+      "tipo": "racao_seca",
+      "marca": "golden",
+      "preco": 139.90
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "codigo": "REQUIRED_FIELD_MISSING",
+  "mensagem": "O campo preço é obrigatório."
+}

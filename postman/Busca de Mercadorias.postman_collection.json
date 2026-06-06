@@ -1,0 +1,979 @@
+{
+  "info": {
+    "_postman_id": "b16b8c64-4e18-4d7c-8b6e-833c37de2ca7",
+    "name": "Busca de Mercadorias",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55535171"
+  },
+  "item": [
+    {
+      "name": "01 - API de Busca (GET)",
+      "item": [
+        {
+          "name": "[CT01] – Busca Combinada por Tipo e Marca com Sucesso",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 200",
+                  "pm.test(\"Status code é 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Valida se o tempo de resposta é menor que 5000ms",
+                  "pm.test(\"Tempo de resposta menor que 5000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "",
+                  "// Valida a estrutura do JSON recebido",
+                  "pm.test(\"Estrutura do JSON está correta\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql(\"success\");",
+                  "    pm.expect(jsonData.dados[0].tipo).to.eql(\"racao_umida\");",
+                  "});",
+                  "",
+                  "// Visualização dos dados de resposta",
+                  "var template = `",
+                  "<style>",
+                  "  body { font-family: Arial, sans-serif; padding: 16px; background: #f9f9f9; }",
+                  "  h2 { color: #333; margin-bottom: 12px; }",
+                  "  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }",
+                  "  thead { background-color: #4a90d9; color: #fff; }",
+                  "  thead th { padding: 10px 14px; text-align: left; font-size: 14px; }",
+                  "  tbody tr:nth-child(odd)  { background-color: #ffffff; }",
+                  "  tbody tr:nth-child(even) { background-color: #eef4fb; }",
+                  "  tbody tr:hover { background-color: #d6e8f7; }",
+                  "  tbody td { padding: 9px 14px; border-bottom: 1px solid #dde; font-size: 13px; color: #444; }",
+                  "  .pagination { background: #fff; border: 1px solid #dde; border-radius: 6px; padding: 10px 16px; display: inline-block; font-size: 13px; color: #555; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }",
+                  "  .pagination span { margin-right: 20px; }",
+                  "  .pagination span:last-child { margin-right: 0; }",
+                  "  .label { font-weight: bold; color: #333; }",
+                  "  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; background: #e0f0e0; color: #2a7a2a; font-size: 12px; }",
+                  "</style>",
+                  "",
+                  "<h2>🐱 Resultados da Busca de Mercadorias</h2>",
+                  "",
+                  "<table>",
+                  "  <thead>",
+                  "    <tr>",
+                  "      <th>Nome</th>",
+                  "      <th>Tipo</th>",
+                  "      <th>Marca</th>",
+                  "      <th>Preço</th>",
+                  "    </tr>",
+                  "  </thead>",
+                  "  <tbody>",
+                  "    {{#each dados}}",
+                  "    <tr>",
+                  "      <td>{{nome}}</td>",
+                  "      <td><span class=\"badge\">{{tipo}}</span></td>",
+                  "      <td>{{marca}}</td>",
+                  "      <td>R$ {{preco}}</td>",
+                  "    </tr>",
+                  "    {{/each}}",
+                  "  </tbody>",
+                  "</table>",
+                  "",
+                  "<div class=\"pagination\">",
+                  "  <span><span class=\"label\">Página atual:</span> {{paginacao.pagina_atual}}</span>",
+                  "  <span><span class=\"label\">Limite:</span> {{paginacao.limite}}</span>",
+                  "  <span><span class=\"label\">Total de registros:</span> {{paginacao.total_registros}}</span>",
+                  "</div>",
+                  "`;",
+                  "",
+                  "function createPayload() {",
+                  "    var jsonData = pm.response.json();",
+                  "    return {",
+                  "        dados: jsonData.dados.map(function(item) {",
+                  "            return {",
+                  "                nome: item.nome,",
+                  "                tipo: item.tipo,",
+                  "                marca: item.marca,",
+                  "                preco: item.preco.toFixed(2)",
+                  "            };",
+                  "        }),",
+                  "        paginacao: {",
+                  "            pagina_atual: jsonData.paginacao.pagina_atual,",
+                  "            limite: jsonData.paginacao.limite,",
+                  "            total_registros: jsonData.paginacao.total_registros",
+                  "        }",
+                  "    };",
+                  "}",
+                  "",
+                  "pm.visualizer.set(template, createPayload());"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=racao_umida&marca=whiskas",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "racao_umida"
+                },
+                {
+                  "key": "marca",
+                  "value": "whiskas"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT01] – Busca Combinada por Tipo e Marca com Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"success\",\r\n  \"dados\": [\r\n    {\r\n      \"id\": \"uuid-1\",\r\n      \"nome\": \"Sachê Whiskas Gatos Castrados Carne\",\r\n      \"tipo\": \"racao_umida\",\r\n      \"marca\": \"whiskas\",\r\n      \"preco\": 4.50\r\n    }\r\n  ],\r\n  \"paginacao\": {\r\n    \"pagina_atual\": 1,\r\n    \"limite\": 20,\r\n    \"total_registros\": 1\r\n  }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=racao_umida&marca=whiskas",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ],
+                  "query": [
+                    {
+                      "key": "tipo",
+                      "value": "racao_umida"
+                    },
+                    {
+                      "key": "marca",
+                      "value": "whiskas"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"success\",\r\n  \"dados\": [\r\n    {\r\n      \"id\": \"uuid-1\",\r\n      \"nome\": \"Sachê Whiskas Gatos Castrados Carne\",\r\n      \"tipo\": \"racao_umida\",\r\n      \"marca\": \"whiskas\",\r\n      \"preco\": 4.50\r\n    }\r\n  ],\r\n  \"paginacao\": {\r\n    \"pagina_atual\": 1,\r\n    \"limite\": 20,\r\n    \"total_registros\": 1\r\n  }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "[CT02] – Resiliência no Tratamento de Caixa de Texto (Case-Insensitive)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 200",
+                  "pm.test(\"Status code é 200 OK - Resiliência Case-Insensitive\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Valida se a API respondeu com sucesso e trouxe dados mesmo com filtros em maiúsculo",
+                  "pm.test(\"API ignorou o Case e retornou registros com sucesso\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql(\"success\");",
+                  "    pm.expect(jsonData.dados).to.be.an('array').that.is.not.empty;",
+                  "});",
+                  "",
+                  "// Visualização dos resultados",
+                  "var jsonData = pm.response.json();",
+                  "",
+                  "var template = `",
+                  "<style>",
+                  "  body { font-family: Arial, sans-serif; padding: 16px; }",
+                  "  h3 { color: #333; }",
+                  "  table { border-collapse: collapse; width: 100%; margin-top: 10px; }",
+                  "  th { background-color: #4CAF50; color: white; padding: 10px; text-align: left; }",
+                  "  td { padding: 8px 10px; border-bottom: 1px solid #ddd; }",
+                  "  tr:hover { background-color: #f5f5f5; }",
+                  "  .pagination { margin-top: 14px; font-size: 13px; color: #555; }",
+                  "</style>",
+                  "",
+                  "<h3>🐱 Resultados da Busca</h3>",
+                  "<table>",
+                  "  <thead>",
+                  "    <tr>",
+                  "      <th>ID</th>",
+                  "      <th>Nome</th>",
+                  "      <th>Tipo</th>",
+                  "      <th>Marca</th>",
+                  "      <th>Preço (R$)</th>",
+                  "    </tr>",
+                  "  </thead>",
+                  "  <tbody>",
+                  "    {{#each dados}}",
+                  "    <tr>",
+                  "      <td>{{id}}</td>",
+                  "      <td>{{nome}}</td>",
+                  "      <td>{{tipo}}</td>",
+                  "      <td>{{marca}}</td>",
+                  "      <td>{{preco}}</td>",
+                  "    </tr>",
+                  "    {{/each}}",
+                  "  </tbody>",
+                  "</table>",
+                  "",
+                  "<div class=\"pagination\">",
+                  "  Página: {{paginacao.pagina_atual}} | Limite: {{paginacao.limite}} | Total de registros: {{paginacao.total_registros}}",
+                  "</div>",
+                  "`;",
+                  "",
+                  "pm.visualizer.set(template, {",
+                  "    dados: jsonData.dados,",
+                  "    paginacao: jsonData.paginacao",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=RACAO_UMIDA&marca=WHISKAS",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "RACAO_UMIDA"
+                },
+                {
+                  "key": "marca",
+                  "value": "WHISKAS"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT02] – Resiliência no Tratamento de Caixa de Texto (Case-Insensitive)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=RACAO_UMIDA&marca=WHISKAS",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ],
+                  "query": [
+                    {
+                      "key": "tipo",
+                      "value": "RACAO_UMIDA"
+                    },
+                    {
+                      "key": "marca",
+                      "value": "WHISKAS"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"success\",\r\n  \"dados\": [\r\n    {\r\n      \"id\": 101,\r\n      \"nome\": \"Sachê Whiskas Carne ao Molho Gatos Castrados\",\r\n      \"tipo\": \"racao_umida\",\r\n      \"marca\": \"whiskas\",\r\n      \"preco\": 3.79\r\n    }\r\n  ],\r\n  \"paginacao\": {\r\n    \"pagina_atual\": 1,\r\n    \"limite\": 20,\r\n    \"total_registros\": 1\r\n  }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "[CT03] – Estouro do Limite de Paginação Permitido (Erro 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 422\r",
+                  "pm.test(\"Status code é 422 Unprocessable Entity\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "});\r",
+                  "\r",
+                  "// Valida a estrutura da mensagem de erro comercial\r",
+                  "pm.test(\"Payload de erro de validação está estruturado\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.status).to.eql(\"error\");\r",
+                  "    pm.expect(jsonData.codigo).to.eql(\"VALIDATION_ERROR\");\r",
+                  "    pm.expect(jsonData.mensagem).to.include(\"limite não pode ser maior do que 100\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?limite=150",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ],
+              "query": [
+                {
+                  "key": "limite",
+                  "value": "150"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT03] – Estouro do Limite de Paginação Permitido (Erro 422)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"success\",\r\n  \"dados\": [\r\n    {\r\n      \"id\": \"uuid-1\",\r\n      \"nome\": \"Sachê Whiskas Gatos Castrados Carne\",\r\n      \"tipo\": \"racao_umida\",\r\n      \"marca\": \"whiskas\",\r\n      \"preco\": 4.50\r\n    }\r\n  ],\r\n  \"paginacao\": {\r\n    \"pagina_atual\": 1,\r\n    \"limite\": 20,\r\n    \"total_registros\": 1\r\n  }\r\n}"
+                },
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?limite=150",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ],
+                  "query": [
+                    {
+                      "key": "limite",
+                      "value": "150"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"error\",\r\n  \"codigo\": \"VALIDATION_ERROR\",\r\n  \"mensagem\": \"O limite não pode ser maior do que 100 registros.\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "[CT04] – Filtros de Busca Inexistentes (Retorno de Lista Vazia)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 200\r",
+                  "pm.test(\"Status code é 200 OK - Busca sem resultados\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Valida integridade do contrato mesmo sem dados\r",
+                  "pm.test(\"Contrato íntegro e array de dados vazio\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.status).to.eql(\"success\");\r",
+                  "    pm.expect(jsonData.dados).to.be.an('array').that.is.empty;\r",
+                  "});\r",
+                  "\r",
+                  "// Valida se os contadores de paginação zeraram corretamente\r",
+                  "pm.test(\"Total de registros na paginação zerado\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.paginacao.total_registros).to.eql(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=arranhador_invisivel&marca=nao_existe",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "arranhador_invisivel"
+                },
+                {
+                  "key": "marca",
+                  "value": "nao_existe"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT04] – Filtros de Busca Inexistentes (Retorno de Lista Vazia)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=arranhador_invisivel&marca=nao_existe",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ],
+                  "query": [
+                    {
+                      "key": "tipo",
+                      "value": "arranhador_invisivel"
+                    },
+                    {
+                      "key": "marca",
+                      "value": "nao_existe"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"success\",\r\n  \"dados\": [],\r\n  \"paginacao\": {\r\n    \"pagina_atual\": 1,\r\n    \"limite\": 20,\r\n    \"total_registros\": 0\r\n  }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "[CT05] – Opcionalidade de Parâmetros na URL (Filtro Parcial)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 200\r",
+                  "pm.test(\"Status code é 200 OK - Filtro Opcional\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Valida se todos os itens retornados pertencem ao tipo solicitado\r",
+                  "pm.test(\"Todos os itens do array correspondem ao tipo filtrado\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.dados).to.be.an('array').that.is.not.empty;\r",
+                  "    \r",
+                  "    // Varre o array garantindo que o filtro de tipo funcionou para todos\r",
+                  "    jsonData.dados.forEach(function(item) {\r",
+                  "        pm.expect(item.tipo).to.eql(\"racao_umida\");\r",
+                  "    });\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=racao_umida",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "racao_umida"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT05] – Opcionalidade de Parâmetros na URL (Filtro Parcial)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?tipo=racao_umida",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ],
+                  "query": [
+                    {
+                      "key": "tipo",
+                      "value": "racao_umida"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"success\",\r\n  \"dados\": [\r\n    {\r\n      \"id\": 101,\r\n      \"nome\": \"Sachê Whiskas Carne ao Molho\",\r\n      \"tipo\": \"racao_umida\",\r\n      \"marca\": \"whiskas\",\r\n      \"preco\": 3.79\r\n    },\r\n    {\r\n      \"id\": 102,\r\n      \"nome\": \"Sachê Royal Canin Kitten Instictive\",\r\n      \"tipo\": \"racao_umida\",\r\n      \"marca\": \"royal_canin\",\r\n      \"preco\": 9.50\r\n    }\r\n  ],\r\n  \"paginacao\": {\r\n    \"pagina_atual\": 1,\r\n    \"limite\": 20,\r\n    \"total_registros\": 2\r\n  }\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - API de Cadastro (POST)",
+      "item": [
+        {
+          "name": "[CT06] – Cadastro de Mercadoria com Preço Inválido (Valor Negativo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 400\r",
+                  "pm.test(\"Status code é 400 Bad Request - Preço Negativo\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "// Valida a mensagem de erro do negócio\r",
+                  "pm.test(\"Payload rejeitado com mensagem de preço inválido\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.status).to.eql(\"error\");\r",
+                  "    pm.expect(jsonData.codigo).to.eql(\"INVALID_PRICE\");\r",
+                  "    pm.expect(jsonData.mensagem).to.include(\"não pode ser menor ou igual a zero\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nome\": \"Sachê Whiskas Frango ao Molho\",\r\n  \"tipo\": \"racao_umida\",\r\n  \"marca\": \"whiskas\",\r\n  \"preco\": -4.50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT06]",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"error\",\r\n  \"codigo\": \"INVALID_PRICE\",\r\n  \"mensagem\": \"O preço do produto não pode ser menor ou igual a zero.\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "[CT07] – Cadastro de Mercadoria Sem Campo Obrigatório (Preço Ausente)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 400\r",
+                  "pm.test(\"Status code é 400 Bad Request - Campo Ausente\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "// Valida o validador de esquema (Schema Validation)\r",
+                  "pm.test(\"Payload rejeitado com mensagem de campo preço obrigatório\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.status).to.eql(\"error\");\r",
+                  "    pm.expect(jsonData.codigo).to.eql(\"REQUIRED_FIELD_MISSING\");\r",
+                  "    pm.expect(jsonData.mensagem).to.include(\"campo preço é obrigatório\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-mock-response-name",
+                "value": "[CT07]",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nome\": \"Arranhador Torre para Gatos\",\r\n  \"tipo\": \"brinquedos\",\r\n  \"marca\": \"cat_comfort\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT07]",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Arranhador Torre para Gatos\",\r\n  \"tipo\": \"brinquedos\",\r\n  \"marca\": \"cat_comfort\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"error\",\r\n  \"codigo\": \"REQUIRED_FIELD_MISSING\",\r\n  \"mensagem\": \"O campo preço é obrigatório.\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "[CT08] – Cadastro de Mercadoria com Nome Acima do Limite",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Valida se o status HTTP é 400\r",
+                  "pm.test(\"Status code é 400 Bad Request - Limite Estourado\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "// Valida a proteção contra estouro de campo\r",
+                  "pm.test(\"Payload rejeitado com mensagem de limite de caracteres excedido\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.status).to.eql(\"error\");\r",
+                  "    pm.expect(jsonData.codigo).to.eql(\"FIELD_LIMIT_EXCEEDED\");\r",
+                  "    pm.expect(jsonData.mensagem).to.include(\"não pode exceder 255 caracteres\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nome\": \"Ração Seca Royal Canin Gatos Castrados - Este é um teste de string abusiva contendo um texto excessivamente longo que vai ultrapassar o limite padrão de duzentos e cinquenta e cinco caracteres configurado na coluna varchar do banco de dados do pet shop para gerar falha controlada\",\r\n  \"tipo\": \"racao_seca\",\r\n  \"marca\": \"royal_canin\",\r\n  \"preco\": 189.90\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?x-mock-response-name=[CT08]",
+              "protocol": "https",
+              "host": [
+                "9b569754-07d0-4568-8751-b06880602c34",
+                "mock",
+                "pstmn",
+                "io"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "mercadorias"
+              ],
+              "query": [
+                {
+                  "key": "x-mock-response-name",
+                  "value": "[CT08]"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "[CT08]",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"Ração Seca Royal Canin Gatos Castrados - Este é um teste de string abusiva contendo um texto excessivamente longo que vai ultrapassar o limite padrão de duzentos e cinquenta e cinco caracteres configurado na coluna varchar do banco de dados do pet shop para gerar falha controlada\",\r\n  \"tipo\": \"racao_seca\",\r\n  \"marca\": \"royal_canin\",\r\n  \"preco\": 189.90\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "https://9b569754-07d0-4568-8751-b06880602c34.mock.pstmn.io/api/v1/mercadorias?x-mock-response-name=[CT08]",
+                  "protocol": "https",
+                  "host": [
+                    "9b569754-07d0-4568-8751-b06880602c34",
+                    "mock",
+                    "pstmn",
+                    "io"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "mercadorias"
+                  ],
+                  "query": [
+                    {
+                      "key": "x-mock-response-name",
+                      "value": "[CT08]"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n  \"status\": \"error\",\r\n  \"codigo\": \"FIELD_LIMIT_EXCEEDED\",\r\n  \"mensagem\": \"O campo nome não pode exceder 255 caracteres.\"\r\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

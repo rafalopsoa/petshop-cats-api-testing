@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "codigo": "FIELD_LIMIT_EXCEEDED",
+  "mensagem": "O campo nome não pode exceder 255 caracteres."
+}

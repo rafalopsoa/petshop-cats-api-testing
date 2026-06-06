@@ -1,0 +1,5 @@
+{
+  "status": "error",
+  "codigo": "INVALID_PRICE",
+  "mensagem": "O preço da mercadoria não pode ser negativo ou zero."
+}
