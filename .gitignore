@@ -1,0 +1,30 @@
+Dependências
+
+node_modules/
+
+Builds
+
+dist/
+
+Variáveis de Ambiente (Segurança)
+
+.env
+.env.test
+.env.production
+
+Cobertura de Testes
+
+coverage/
+.nyc_output/
+
+Prisma
+
+prisma/migrations/sqlite/
+.prisma/
+
+Logs e SO
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
